@@ -1,25 +1,18 @@
 package cn.com.sciencsys.sciencsys.initsystem;
 
 public class Laboratory {
-    private String name;        //名称
-    private int id;             //id
-    private String text;           //端口
+    private String name;
+    private int imageId;
 
-    public Laboratory(String name,String text,int id){
-        this.id = id;
+    public Laboratory(String name,int imageId){
         this.name = name;
-        this.text = text;
+        this.imageId = imageId;
     }
 
     public String getName() {
         return name;
     }
-
-    public String getText() {
-        return text;
-    }
-
-    public int getId() {
-        return id;
+    public int getImageId(){
+        return imageId;
     }
 }

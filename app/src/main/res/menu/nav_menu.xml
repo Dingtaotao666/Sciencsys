@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_physics"
+            android:icon="@drawable/timg"
+            android:title="物理"/>
+        <item
+            android:id="@+id/nav_chemistry"
+            android:icon="@drawable/timg"
+            android:title="化学"/>
+        <item
+            android:id="@+id/nav_biology"
+            android:icon="@drawable/timg"
+            android:title="生物"/>
+    </group>
+</menu>

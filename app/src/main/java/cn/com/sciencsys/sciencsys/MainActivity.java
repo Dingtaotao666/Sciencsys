@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import cn.com.sciencsys.sciencsys.SysService.TcpService;
 import cn.com.sciencsys.sciencsys.dedicated.DedicatedMainActivity;
+import cn.com.sciencsys.sciencsys.dedicated.Main2Activity;
 import cn.com.sciencsys.sciencsys.initsystem.LogUtil;
 
 //调试时候AppCom可以屏蔽broad

@@ -1,92 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- DrawerLayout：滑动显示布局 -->
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".dedicated.DedicatedMainActivity">
-
+    <!-- CoordinatorLayout：该布局可以监听所以子控件 -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <!-- AppBarLayout：recycler的toolbar滑动隐藏 -->
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <ConstraintLayout
+            android:layout_height="wrap_content">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                app:layout_scrollFlags="scroll|enterAlways|snap">
+
                 <SearchView
                     android:id="@+id/searchView"
                     android:layout_width="395dp"
-                    android:layout_height="28dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_height="28dp" />
 
                 <RadioGroup
                     android:id="@+id/radioGroup"
                     android:layout_width="395dp"
                     android:layout_height="28dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/searchView">
+                    android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/radioButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="RadioButton" />
+                        android:text="RadioNull" />
 
                     <RadioButton
                         android:id="@+id/radioButton2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="RadioButton" />
+                        android:text="RadioOK" />
                 </RadioGroup>
 
-            </ConstraintLayout>
+            </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView2"
+        <!-- SwipeRefreshLayout：recycler的下拉刷新 -->
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/lab_recyclerView_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            />
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-    <TextView
-        android:layout_width="400dp"
-        android:layout_height="30dp"
-        android:layout_gravity="start"
-        android:gravity="center"
-        android:text="物理"
-        android:textSize="30dp" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/lab_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:gravity="center"
-        android:text="化学"
-        android:textSize="30dp" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:gravity="center"
-        android:text="生物"
-        android:textSize="30dp" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <!-- NavigationView：滑动页面的布局，能监听子控件 -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity = "start"
+        app:menu="@menu/nav_menu"
+        app:headerLayout="@layout/nav_header"
+        >
+
+    </com.google.android.material.navigation.NavigationView>
+
 
 
 
