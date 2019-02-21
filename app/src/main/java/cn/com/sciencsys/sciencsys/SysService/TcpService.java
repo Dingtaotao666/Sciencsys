@@ -7,6 +7,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.widget.Toast;
 
 import java.net.Socket;
 import java.util.List;
@@ -108,10 +109,10 @@ public class TcpService extends Service {
             sendMessage(MessageSource.MSG_TASK_UPDATA_COMMAND_SUCCESS,i,0,0);
         }
     };
-    private Handler mHandler = new Handler(){
+    private Handler mHandler = new Handler(new Handler.Callback() {
+
         @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
+        public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case MessageSource.MSG_TASK_CONNEECT:           //测试连接
                     cMessenger = msg.replyTo;//get the messenger of client
@@ -130,7 +131,7 @@ public class TcpService extends Service {
                     resetAllTask();
                     break;
                 case MessageSource.MSG_TASK_START:      //定时时间携带
-                    timeTick = msg.arg1;
+                    timeTick = msg.arg1;                //开始命令中如果定时时间为0 表示时间无法确定，在专用软件中使用
                     mSensorList = ( List<Sensor>) msg.obj;
                     cMessenger = msg.replyTo;//get the messenger of client
                     //startCollectTask();
@@ -146,8 +147,11 @@ public class TcpService extends Service {
                 default:
                     break;
             }
+
+
+            return true;
         }
-    };
+    });
     private Messenger mMessenger = new Messenger(mHandler);//It's the messenger of server
     private Messenger cMessenger = null;//It's the messenger of client
 
@@ -302,13 +306,13 @@ public class TcpService extends Service {
 
                 }
             }
-
-            if (mTimer == null) {
+            //timeTick = 0为专用实验，停止命令才能停止实验
+            if (mTimer == null && timeTick != 0) {
                 mTimer = new Timer();
             }
 
             count = 0;
-            if (mTimerTask == null) {
+            if (mTimerTask == null&& timeTick != 0) {
                 mTimerTask = new TimerTask() {
                     @Override
                     public void run() {

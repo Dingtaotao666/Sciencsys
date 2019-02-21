@@ -70,10 +70,10 @@ public class PopActivity extends AppCompatActivity implements View.OnClickListen
     private Messenger rMessenger = null;//activity发送消息的message（Server端的信使对象）
     private Messenger mMessenger = null;//activity接受消息的message
 
-    private Handler mHandler = new Handler(){
+    private Handler mHandler = new Handler(new Handler.Callback() {
+
         @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
+        public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case MessageSource.MSG_TASK_TIME_TICK:               //显示倒计时（携带arg1：需要显示的时间）
                     int timeTick = msg.arg1;
@@ -152,9 +152,10 @@ public class PopActivity extends AppCompatActivity implements View.OnClickListen
                 default:
                     break;
             }
-        }
-    };
 
+            return true;
+        }
+    });
 //--------------------------------------------------------------------------------------------------------------------------
 
 

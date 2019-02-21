@@ -38,14 +38,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="RadioNull" />
+                        android:text="过滤" />
 
                     <RadioButton
                         android:id="@+id/radioButton2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="RadioOK" />
+                        android:text="不过滤" />
                 </RadioGroup>
 
             </LinearLayout>
