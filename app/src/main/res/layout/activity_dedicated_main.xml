@@ -22,10 +22,17 @@
                 android:orientation="vertical"
                 app:layout_scrollFlags="scroll|enterAlways|snap">
 
-                <SearchView
-                    android:id="@+id/searchView"
-                    android:layout_width="395dp"
-                    android:layout_height="28dp" />
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    style="@style/ToolbarStyle"
+                    android:background="@color/colorPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    app:title="专用实验"
+                    app:titleTextColor="@android:color/white"
+                    >
+
+                </androidx.appcompat.widget.Toolbar>
 
                 <RadioGroup
                     android:id="@+id/radioGroup"

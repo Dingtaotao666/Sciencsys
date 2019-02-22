@@ -1,6 +1,7 @@
 package cn.com.sciencsys.sciencsys.dedicated;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ComponentName;
@@ -12,7 +13,12 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -24,6 +30,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,7 +51,8 @@ import cn.com.sciencsys.sciencsys.initsystem.Sensor;
 
 public class DedicatedMainActivity extends AppCompatActivity {
     private boolean filtration = false;     //是否过滤
-
+    private Toolbar mToolbar;
+    private SearchView mSearchView;
     private DrawerLayout mDrawerLayout;
     private SwipeRefreshLayout swipeRefresh;
     private List<Laboratory> laboratoryList = new ArrayList<>();
@@ -75,9 +86,12 @@ public class DedicatedMainActivity extends AppCompatActivity {
             return true;
         }
     });
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_dedicated_main);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -164,6 +178,64 @@ public class DedicatedMainActivity extends AppCompatActivity {
                 }
             }
         });
+        /**
+         * TToobar中搜索
+         */
+        mToolbar = (Toolbar) findViewById(R.id.toolbar) ;
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationIcon(R.mipmap.ic_menu);//设置导航的图标
+        //设置导航图标的点击事件
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_tool_bar,menu);
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        mSearchView = (SearchView) menuItem.getActionView();
+        mSearchView。
+        //设置最大宽度
+//        mSearchView.setMaxWidth(500);
+        //设置是否显示搜索框展开时的提交按钮
+        mSearchView.setSubmitButtonEnabled(true);
+        //设置输入框提示语
+        mSearchView.setQueryHint("请输入要查询实验的首字母");
+
+        //搜索框展开时后面叉叉按钮的点击事件
+        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                Toast.makeText(getApplicationContext(), "Close", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+        //搜索图标按钮(打开搜索框的按钮)的点击事件
+        mSearchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "请输入要查询实验的首字母", Toast.LENGTH_LONG).show();
+            }
+        });
+        //搜索框文字变化监听
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                Log.e("CSDN_LQR", "TextSubmit : " + s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                Log.e("CSDN_LQR", "TextChange --> " + s);
+                return false;
+            }
+        });
+
+        return true;
     }
     private void initFiltration(){
         laboratoryList.clear();
