@@ -1,11 +1,9 @@
 package cn.com.sciencsys.sciencsys;
 
 import android.Manifest;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
@@ -17,14 +15,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import android.os.IBinder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import cn.com.sciencsys.sciencsys.SysService.TcpService;
 import cn.com.sciencsys.sciencsys.dedicated.DedicatedMainActivity;
-import cn.com.sciencsys.sciencsys.dedicated.Main2Activity;
 import cn.com.sciencsys.sciencsys.initsystem.LogUtil;
 
 //调试时候AppCom可以屏蔽broad

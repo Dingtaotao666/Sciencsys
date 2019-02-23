@@ -1,24 +1,30 @@
 package cn.com.sciencsys.sciencsys.dedicated;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -38,6 +44,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import cn.com.sciencsys.sciencsys.MainActivity;
 import cn.com.sciencsys.sciencsys.PopActivity;
 import cn.com.sciencsys.sciencsys.R;
 import cn.com.sciencsys.sciencsys.SysService.TcpService;
@@ -50,8 +57,10 @@ import cn.com.sciencsys.sciencsys.initsystem.PublicMethod;
 import cn.com.sciencsys.sciencsys.initsystem.Sensor;
 
 public class DedicatedMainActivity extends AppCompatActivity {
+    private Intent intent;
     private boolean filtration = false;     //是否过滤
     private Toolbar mToolbar;
+    private RecyclerView recyclerView;
     private SearchView mSearchView;
     private DrawerLayout mDrawerLayout;
     private SwipeRefreshLayout swipeRefresh;
@@ -139,16 +148,110 @@ public class DedicatedMainActivity extends AppCompatActivity {
             }
         });
         initLaboratory();
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.lab_recyclerView);
+        recyclerView = (RecyclerView) findViewById(R.id.lab_recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
+
         adapter = new LabAdapter(this,laboratoryList);
         recyclerView.setAdapter(adapter);
+        recyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        //recycler的點擊事件的监听，返回的数据是实验的标号
+        adapter.setOnClickViewListener(new LabAdapter.OnClickViewListener() {
+            @Override
+            public void onViewClick(View view, int num) {
+                switch (num){
+                    case 0:
+                        intent = new Intent(DedicatedMainActivity.this, De0Activity.class);
+                        startActivity(intent);
+                        break;
+                    case 1:
+                        intent = new Intent(DedicatedMainActivity.this, De1Activity.class);
+                        startActivity(intent);
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    case 7:
+                        break;
+                    case 8:
+                        break;
+                        //化学类
+                    case 50:
+                        break;
+                    case 51:
+                        break;
+                    case 52:
+                        break;
+                    case 53:
+                        break;
+                    case 54:
+                        break;
+                    case 55:
+                        break;
+                    case 56:
+                        break;
+                    case 57:
+                        break;
+                    case 58:
+                        break;
+                    case 59:
+                        break;
+                        //生物类
+                    case 100:
+                        break;
+                    case 101:
+                        break;
+                    case 102:
+                        break;
+                    case 103:
+                        break;
+                    case 104:
+                        break;
+                    case 105:
+                        break;
+                    case 106:
+                        break;
+                    case 107:
+                        break;
+                    case 108:
+                        break;
+
+                    default:break;
+
+                }
+            }
+        });
         /**
          * 下拉刷新
          */
         swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.lab_recyclerView_refresh);
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
+        /**
+         * 隐藏软键盘
+         */
+        swipeRefresh.setOnChildScrollUpCallback(new SwipeRefreshLayout.OnChildScrollUpCallback() {
+            @Override
+            public boolean canChildScrollUp(@NonNull SwipeRefreshLayout parent, @Nullable View child) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(child.getWindowToken(), 0); // 输入法如果是显示状态，那么就隐藏输入法
+                     }
+                return false;
+            }
+        });
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -197,9 +300,16 @@ public class DedicatedMainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_tool_bar,menu);
         MenuItem menuItem = menu.findItem(R.id.action_search);
         mSearchView = (SearchView) menuItem.getActionView();
-        mSearchView。
+
+        //修改搜索框控件间的间隔（这样只是为了更加接近网易云音乐的搜索框）
+        LinearLayout search_edit_frame = (LinearLayout) mSearchView.findViewById(R.id.search_edit_frame);
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) search_edit_frame.getLayoutParams();
+        params.leftMargin = 0;
+        params.rightMargin = 0;
+        search_edit_frame.setLayoutParams(params);
+
         //设置最大宽度
-//        mSearchView.setMaxWidth(500);
+        mSearchView.setMaxWidth(1800);
         //设置是否显示搜索框展开时的提交按钮
         mSearchView.setSubmitButtonEnabled(true);
         //设置输入框提示语
@@ -209,7 +319,8 @@ public class DedicatedMainActivity extends AppCompatActivity {
         mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                Toast.makeText(getApplicationContext(), "Close", Toast.LENGTH_SHORT).show();
+                initLaboratory();
+                adapter.notifyDataSetChanged();
                 return false;
             }
         });
@@ -224,18 +335,49 @@ public class DedicatedMainActivity extends AppCompatActivity {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                Log.e("CSDN_LQR", "TextSubmit : " + s);
+                initFiltrationSearch(s);
+                adapter.notifyDataSetChanged();
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
-                Log.e("CSDN_LQR", "TextChange --> " + s);
+                if (!TextUtils.isEmpty(s)){
+
+                }else{
+
+                }
                 return false;
             }
         });
 
         return true;
+    }
+    private void initFiltrationSearch(String s){
+        laboratoryList.clear();
+        //没有传感器时默认清空列表
+        if (labStytle == 0){
+            for (int i = 0;i< LabConstants.physicsLaboratoriesList.length;i++){
+                String key = LabConstants.physicsLaboratoriesList[i].getKey();
+                if (s.contains(key)) {
+                    laboratoryList.add(LabConstants.physicsLaboratoriesList[i]);
+                }
+            }
+        }else if (labStytle == 1){
+            for (int i = 0;i< LabConstants.chemistryLaboratoriesList.length;i++){
+                String key = LabConstants.chemistryLaboratoriesList[i].getKey();
+                if (s.contains(key)) {
+                    laboratoryList.add(LabConstants.chemistryLaboratoriesList[i]);
+                }
+            }
+        }else if (labStytle == 2){
+            for (int i = 0;i< LabConstants.biologyLaboratoriesList.length;i++){
+                String key = LabConstants.biologyLaboratoriesList[i].getKey();
+                if (s.contains(key)) {
+                    laboratoryList.add(LabConstants.biologyLaboratoriesList[i]);
+                }
+            }
+        }
     }
     private void initFiltration(){
         laboratoryList.clear();

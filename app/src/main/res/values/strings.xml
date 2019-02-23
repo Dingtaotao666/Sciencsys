@@ -6,4 +6,6 @@
     <string name="setting">设置</string>
     <string name="cancel">取消</string>
     <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_de0">De0Activity</string>
+    <string name="title_activity_de1">De1Activity</string>
 </resources>

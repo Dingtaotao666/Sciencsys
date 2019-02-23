@@ -19,6 +19,7 @@ import cn.com.sciencsys.sciencsys.R;
 import cn.com.sciencsys.sciencsys.initsystem.Laboratory;
 
 public class LabAdapter extends RecyclerView.Adapter<LabAdapter.ViewHolder> {
+    private OnClickViewListener onClickViewListener;
     private Context mContext;
     private List<Laboratory> mLaboratory;
     static class ViewHolder extends RecyclerView.ViewHolder{
@@ -26,8 +27,10 @@ public class LabAdapter extends RecyclerView.Adapter<LabAdapter.ViewHolder> {
         ImageView laboratoryImage;
         TextView laboratoryName;
 
+        View labView;
         public ViewHolder(View view){
             super(view);
+            labView = view;
             cardView = (CardView) view;
             laboratoryImage = (ImageView) view.findViewById(R.id.lab_image);
             laboratoryName = (TextView) view.findViewById(R.id.lab_name);
@@ -37,13 +40,24 @@ public class LabAdapter extends RecyclerView.Adapter<LabAdapter.ViewHolder> {
         this.mLaboratory = mLaboratory;
         this.mContext = context;
     }
-
-
+    public interface OnClickViewListener {
+        void onViewClick(View view,int num);
+    }
+    public void setOnClickViewListener(OnClickViewListener onClickViewListener) {
+        this.onClickViewListener = onClickViewListener;
+    }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Laboratory laboratory = mLaboratory.get(position);
+        final Laboratory laboratory = mLaboratory.get(position);
         holder.laboratoryName.setText(laboratory.getName());    //setText传入其他类型数据会出错
         Glide.with(mContext).load(laboratory.getImageId()).into(holder.laboratoryImage);
+
+        holder.labView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickViewListener.onViewClick(v,laboratory.getNum());
+            }
+        });
     }
 
     @NonNull
@@ -54,6 +68,7 @@ public class LabAdapter extends RecyclerView.Adapter<LabAdapter.ViewHolder> {
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.laboratory_item,parent,false);
         ViewHolder holder =new ViewHolder(view);
+
         return holder;
     }
 

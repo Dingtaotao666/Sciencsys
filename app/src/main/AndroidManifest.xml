@@ -20,8 +20,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar">
         <activity
-            android:name=".dedicated.Main2Activity"
-            android:label="@string/title_activity_main2"></activity>
+            android:name=".dedicated.De1Activity"
+            android:label="@string/title_activity_de1"></activity>
+        <activity
+            android:name=".dedicated.De0Activity"
+            android:label="@string/title_activity_de0" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
