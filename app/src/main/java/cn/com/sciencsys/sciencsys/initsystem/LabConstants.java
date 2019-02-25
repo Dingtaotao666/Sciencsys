@@ -7,7 +7,7 @@ import cn.com.sciencsys.sciencsys.R;
 public class LabConstants {
     //物理实验列表
     public static Laboratory [] physicsLaboratoriesList = {
-            new Laboratory("1",R.drawable.timg,new int[]{1,2},"a",0),
+            new Laboratory("1",R.drawable.timg,new int[]{222,12},"CHXDPFATXQX",0),
             new Laboratory("2",R.drawable.timg,new int[]{1,2},"b",1),
             new Laboratory("3",R.drawable.timg,new int[]{1,2},"b",2),
             new Laboratory("4",R.drawable.timg,new int[]{1,2},"b",3),
